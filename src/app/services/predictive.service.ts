@@ -22,7 +22,7 @@ export class PredictiveService {
 
   public TIMESTAMP: number = 59.35
 
-  constructor(private feedService: FeedsService, private toastrService: ToastrService, private demoService: DemoService) {
+  constructor(private feedService: FeedsService, private toastrService: ToastrService) {
 
   }
 
@@ -52,15 +52,12 @@ export class PredictiveService {
   }
 
   public toggleIntrusive(): void {
-    if (this.demoService.isDemoLive) {
-      this.toastrService.warning('Demo must be paused to switch intrusive mode!');
-      return;
-    }
+    // this.IntrusiveSub.next(!this.IntrusiveSub.value);
     
     this.IntrusiveSub.next(!this.IntrusiveSub.value);
     if (this.IntrusiveSub.value === true)
-      this.toastrService.success('Intrusive mode is now active!');
+      this.toastrService.success('Intrusive mode is now active!', 'Switch Succeeded');
     else
-      this.toastrService.success('Non intrusive mode is now active!');
+      this.toastrService.success('Non-intrusive mode is now active!', 'Switch Succeeded');
   }
 }
