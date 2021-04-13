@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DemoService } from './demo.service';
 import { FeedsService } from './feeds.service';
 import { SignalRService } from './signal-r.service';
 

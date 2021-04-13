@@ -165,12 +165,10 @@ export class DemoService extends ApiBaseService<string, string> {
 
       if (this.feedsService.isPredictive)
         this.toastService.success(
-          'The demo has successfully switched to predictive mode'
-        );
+          'The demo has successfully switched to predictive mode', 'Switch Succeeded');
       else
         this.toastService.success(
-          'The demo has successfully switched to non predictive mode'
-        );
+          'The demo has successfully switched to non predictive mode', 'Switch Succeeded');
     }
   }
 
