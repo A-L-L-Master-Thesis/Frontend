@@ -6,9 +6,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 1">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 0) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 0) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[0] (click)="onPlayerClick(0)" (dblclick)="onPlayerDoubleClick(0)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[0] (click)="onPlayerClick(0)" (dblclick)="onPlayerDoubleClick(0)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">1</span>
           </span>
@@ -17,9 +19,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 2">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 1) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 1) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[1] (click)="onPlayerClick(1)" (dblclick)="onPlayerDoubleClick(1)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[1] (click)="onPlayerClick(1)" (dblclick)="onPlayerDoubleClick(1)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">2</span>
           </span>
@@ -30,9 +34,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 3">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 2) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 2) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[2] (click)="onPlayerClick(2)" (dblclick)="onPlayerDoubleClick(2)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[2] (click)="onPlayerClick(2)" (dblclick)="onPlayerDoubleClick(2)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">3</span>
           </span>
@@ -41,9 +47,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 4">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 3) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 3) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[3] (click)="onPlayerClick(3)" (dblclick)="onPlayerDoubleClick(3)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[3] (click)="onPlayerClick(3)" (dblclick)="onPlayerDoubleClick(3)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">4</span>
           </span>
@@ -54,9 +62,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 5">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 4) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 4) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[4] (click)="onPlayerClick(4)" (dblclick)="onPlayerDoubleClick(4)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[4] (click)="onPlayerClick(4)" (dblclick)="onPlayerDoubleClick(4)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">5</span>
           </span>
@@ -65,9 +75,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 6">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 5) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 5) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[5] (click)="onPlayerClick(5)" (dblclick)="onPlayerDoubleClick(5)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[5] (click)="onPlayerClick(5)" (dblclick)="onPlayerDoubleClick(5)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">6</span>
           </span>
@@ -78,9 +90,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 7">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 6) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 6) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[6] (click)="onPlayerClick(6)" (dblclick)="onPlayerDoubleClick(6)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[6] (click)="onPlayerClick(6)" (dblclick)="onPlayerDoubleClick(6)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">7</span>
           </span>
@@ -89,9 +103,11 @@
       <div *ngIf="this.feedsService.feedsActiveSub.value.length >= 8">
         <div class="container"
           [ngClass]="[(selectedVidIndex == 7) ? 'vid-container-selected' : 'vid-container-unselected', (hoverVidIndex == 7) ? 'vid-container-hover' : '']">
-          <app-video-player [source]=obsList[7] (click)="onPlayerClick(7)" (dblclick)="onPlayerDoubleClick(7)"
+          <div class ="vid-padding">
+            <app-video-player [source]=obsList[7] (click)="onPlayerClick(7)" (dblclick)="onPlayerDoubleClick(7)"
             (playerApi)="addPlayerApi($event)">
-          </app-video-player>
+            </app-video-player>
+          </div>
           <span class="icon-circle">
             <span class="icon-text">8</span>
           </span>

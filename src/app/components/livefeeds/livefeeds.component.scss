@@ -1,9 +1,5 @@
 .vid-container-selected {
   margin-bottom: 0.5rem;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
   background-color: rgb(44, 216, 44);
 }
 
@@ -13,11 +9,11 @@
 
 .vid-container-hover {
   margin-bottom: 0.5rem;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
   background-color: rgb(248, 248, 248);
+}
+
+.vid-padding {
+  padding: 0.2rem;
 }
 
 .columns-margin {
