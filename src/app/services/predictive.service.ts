@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DemoService } from './demo.service';
 import { FeedsService } from './feeds.service';
 
 @Injectable({
@@ -20,7 +22,7 @@ export class PredictiveService {
 
   public TIMESTAMP: number = 59.35
 
-  constructor(private feedService: FeedsService) {
+  constructor(private feedService: FeedsService, private toastrService: ToastrService) {
 
   }
 
@@ -50,6 +52,12 @@ export class PredictiveService {
   }
 
   public toggleIntrusive(): void {
+    // this.IntrusiveSub.next(!this.IntrusiveSub.value);
+    
     this.IntrusiveSub.next(!this.IntrusiveSub.value);
+    if (this.IntrusiveSub.value === true)
+      this.toastrService.success('Intrusive mode is now active!', 'Switch Succeeded');
+    else
+      this.toastrService.success('Non-intrusive mode is now active!', 'Switch Succeeded');
   }
 }
