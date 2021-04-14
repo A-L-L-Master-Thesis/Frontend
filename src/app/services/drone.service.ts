@@ -20,7 +20,6 @@ export class DroneService extends ApiBaseService<Drone, string> {
   public selectedDroneId = '';
   private usedZoneColors: string[] = [];
   public isDemoLive = false;
-  public isDemoStarted = false;
 
   subscription: Subscription;
 

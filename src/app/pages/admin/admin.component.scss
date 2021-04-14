@@ -1,0 +1,53 @@
+.map-child {
+  position: absolute !important;
+  transform: translateY(-150%);
+  left: 20px !important;
+}
+
+.button {
+  border-width: 0px;
+}
+
+.info-card {
+  background-color: transparent;
+}
+
+.feeds-container {
+  background-color: #565656;
+  position: fixed;
+  bottom: 0px;
+}
+
+.is-fullheight {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.card {
+  position: fixed;
+  top: 100px;
+  bottom: auto;
+  right: 10px;
+  z-index: 40;
+
+  width: 400px;
+
+  .card-header {
+    .card-header-title {
+      color: white;
+    }
+  }
+
+  .card-footer {
+    border: none;
+  }
+
+  .card-footer-item {
+    border: none;
+    color: white;
+  }
+
+  .card-footer-item:hover {
+    background-color: #858585;
+  }
+}

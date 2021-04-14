@@ -11,27 +11,41 @@ import { take } from 'rxjs/operators';
 import { LogsService } from './logs.service';
 import { Observable } from 'rxjs';
 import { DroneStatus } from '../models/drone-status.enum';
+import { SignalRService } from './signal-r.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DemoService extends ApiBaseService<string, string> {
+  public isDemoLive = false;
+  public btnTxt = toggleDemoBtnTxt[0];
+  private firstRun = true;
+
+  public logs: string[] = [];
+
   constructor(
     protected toastService: ToastrService,
     protected feedsService: FeedsService,
     protected httpClient: HttpClient,
     protected predictiveService: PredictiveService,
     protected droneService: DroneService,
-    private logService: LogsService
+    private logService: LogsService,
+    private signalR: SignalRService
   ) {
     super(`${environment.api.baseUrl}/demo`, httpClient, toastService);
+    signalR.addDemoStateListener((data: boolean) => {
+      if (!data)
+        this.skinStart();
+      else
+        this.skinPause();
+
+      this.firstRun = false;
+    });
+
+    signalR.addRestartListener(() => {
+      this.restartDemo();
+    });
   }
-
-  public isDemoLive = false;
-  public isDemoStarted = false;
-  public btnTxt = toggleDemoBtnTxt[0];
-
-  public logs: string[] = [];
 
   public toggleDrones(ext: string): void {
     this.postDemoToggle(ext).pipe(take(1)).subscribe();
@@ -42,7 +56,7 @@ export class DemoService extends ApiBaseService<string, string> {
     this.delete().pipe(take(1)).subscribe();
   }
 
-  public restartDemo(): void {
+  public restartDemo(reload = true): void {
     if (this.isDemoLive) {
       this.toastService.error('You must pause the demo before resetting', 'Reset Failed');
       return;
@@ -50,11 +64,16 @@ export class DemoService extends ApiBaseService<string, string> {
 
     this.restartDrones();
     this.btnTxt = toggleDemoBtnTxt[0];
-    this.predictiveService.ShowInfoCardSub.next(false); 
+    this.predictiveService.ShowInfoCardSub.next(false);
     this.logs.push('DemoRestart: ' + this.getTimestamp());
     this.logService.sendLog('DemoRestart: ' + this.getTimestamp());
-    this.feedsService.getFeeds();
-    this.toastService.success('The demo has successfully resetted', 'Reset Succeeded');
+
+    if (reload)
+      window.location.reload();
+    else {
+      this.feedsService.getFeeds();
+      this.toastService.success('The demo has successfully resetted', 'Reset Succeeded');
+    }
   }
 
   public addMapClickToLog(lat: number, lng: number) {
@@ -81,23 +100,24 @@ export class DemoService extends ApiBaseService<string, string> {
   }
 
   public toggleStartDemo(): void {
-    if (this.isDemoLive) this.pauseDemo();
-    else this.startDemo();
+    this.isDemoLive
+      ? this.pauseDemo()
+      : this.startDemo();
+  }
+
+  private skinStart(): void {
+    this.feedsService.startFeeds();
+    this.isDemoLive = true;
+    this.toastService.success('The demo has been started', 'Demo Started!');
+    this.btnTxt = toggleDemoBtnTxt[1];
   }
 
   public startDemo(): void {
-    this.feedsService.startFeeds();
-    this.isDemoLive = true;
-    this.isDemoStarted = true;
+    this.signalR.callRemoteProcedure('StartDemo');
+    // this.skinStart();
     this.toggleDrones('true');
-    this.toastService.success(
-      'The demo has successfully started',
-      'Demo Started!'
-    );
-    this.btnTxt = toggleDemoBtnTxt[1];
     this.logs.push('DemoStart: ' + this.getTimestamp());
     this.logService.sendLog('DemoStart: ' + this.getTimestamp());
-
     this.predictiveService.Data.subscribe((idx: number) => {
       if (idx >= 0) {
         this.toggleDronePause(idx, true);
@@ -105,14 +125,35 @@ export class DemoService extends ApiBaseService<string, string> {
     });
   }
 
+  private skinPause(): void {
+    if (this.firstRun) {
+      this.btnTxt = toggleDemoBtnTxt[0];
+    } else {
+      this.isDemoLive = false;
+      this.toastService.info('The demo has been paused', 'Demo Paused!');
+      this.btnTxt = toggleDemoBtnTxt[2];
+      this.feedsService.pauseFeeds();
+    }
+  }
+
   public pauseDemo(): void {
-    this.feedsService.pauseFeeds();
-    this.isDemoLive = false;
+    // this.skinPause();
+    this.signalR.callRemoteProcedure('PauseDemo');
     this.toggleDrones('false');
-    this.toastService.info('The demo has successfully paused', 'Demo Paused!');
-    this.btnTxt = toggleDemoBtnTxt[2];
     this.logs.push('DemoPause: ' + this.getTimestamp());
     this.logService.sendLog('DemoPause: ' + this.getTimestamp());
+
+    /* if (this.firstRun) {
+      this.btnTxt = toggleDemoBtnTxt[0];
+    } else {
+      this.feedsService.pauseFeeds();
+      this.isDemoLive = false;
+      this.toggleDrones('false');
+      this.toastService.info('The demo has successfully paused', 'Demo Paused!');
+      this.btnTxt = toggleDemoBtnTxt[2];
+      this.logs.push('DemoPause: ' + this.getTimestamp());
+      this.logService.sendLog('DemoPause: ' + this.getTimestamp());
+    } */
   }
 
   public togglePredictive(): void {
@@ -120,7 +161,7 @@ export class DemoService extends ApiBaseService<string, string> {
       this.logs.push('Predictive Toggle: ' + this.getTimestamp());
       this.logService.sendLog('Predictive Toggle: ' + this.getTimestamp());
       this.feedsService.isPredictive = !this.feedsService.isPredictive;
-      this.restartDemo();
+      this.restartDemo(false);
 
       if (this.feedsService.isPredictive)
         this.toastService.success(

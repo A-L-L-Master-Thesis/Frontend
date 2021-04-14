@@ -8,9 +8,10 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 import { AgmDrawingModule } from '@agm/drawing';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [DashboardComponent, AdminComponent],
   imports: [
     CommonModule,
     PagesRoutingModule,

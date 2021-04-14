@@ -1,0 +1,81 @@
+<div class="card">
+  <div class="card-header">
+    <p class="card-header-title">Admin Menu</p>
+  </div>
+  <div class="card-content">
+    <div class="content">
+      <p>Predictive: {{feedsService.isPredictive}}</p>
+      <p>Intrusive: {{predictiveService.Intrusive | async}}</p>
+    </div>
+  </div>
+  <footer class="card-footer">
+    <a class="card-footer-item" (click)="demoService.toggleStartDemo()"> {{this.demoService.btnTxt}} </a>
+    <a class="card-footer-item" (click)="demoService.restartDemo()">Reset</a>
+    <a class="card-footer-item" (click)="predictiveService.toggleIntrusive()">Change Predictive</a>
+    <a class="card-footer-item" (click)="demoService.togglePredictive()">Toggle Predictive</a>
+  </footer>
+</div>
+
+<div class="columns is-fullwidth is-gapless full-columns" style="overflow: hidden;">
+  <div class="column">
+    <!-- Map container -->
+    <div class="container is-fullwidth">
+
+      <agm-map [latitude]=mapService.latitude [longitude]=mapService.longitude [zoom]="15" [styles]=mapstyle
+        [disableDefaultUI]="true" [mapDraggable]="true">
+
+        <!-- Boat Marker -->
+        <ng-container *ngIf="boatService.BoatPosition | async; let pos">
+
+          <agm-marker
+            [iconUrl]='{path: getSvgPath(boatService.BoatOrientation | async), fillColor: "#FFFFFF", fillOpacity: 0.25, strokeWeight: 0}'
+            [latitude]="pos.lat" [longitude]="pos.lng" [zIndex]="10" [markerClickable]=false>
+          </agm-marker>
+
+          <agm-marker [iconUrl]="{url: '/assets/icons/boat.svg', scaledSize:{height:30,width:30}}" [latitude]="pos.lat"
+            [longitude]="pos.lng" [zIndex]="20" [markerClickable]=false>
+          </agm-marker>
+
+        </ng-container>
+
+        <!-- Drone Markers -->
+        <ng-container *ngFor="let drone of droneService.droneList; let i=index">
+
+          <agm-marker
+            [iconUrl]='{path: getSvgPath(drone.currentPosition.bearing - 90), fillColor: "#FFFFFF", fillOpacity: 0.25, strokeWeight: 0}'
+            [latitude]="drone.currentPosition.latitude" [longitude]="drone.currentPosition.longitude" [zIndex]="10"
+            [markerClickable]=false>
+          </agm-marker>
+
+          <agm-marker [iconUrl]="{url: drone.ui.iconUrl, scaledSize:{height:30,width:30}}"
+            [label]="{color: 'white', text: (i + 1).toString(), fontWeight: 'bold', fontFamily: 'monospace'}"
+            [latitude]="drone.currentPosition.latitude" [longitude]="drone.currentPosition.longitude" [zIndex]="20"
+            [markerClickable]=false>
+
+            <agm-snazzy-info-window [maxWidth]="200" [isOpen]="true" [placement]="'right'" [closeOnMapClick]="false"
+              [showCloseButton]="false" [panOnOpen]="false" [pointer]=false [shadow]=false [padding]="'0'"
+              [backgroundColor]="'transparent'" [border]="false" [fontColor]="'white'">
+              <ng-template>
+                <ng-container *ngIf="boatService.BoatPosition | async; let pos">
+                  Distance: {{mapService.calculateDistance(drone.currentPosition.latitude,
+                  drone.currentPosition.longitude, pos.lat, pos.lng)}}m<br>
+                  Bearing: {{mapService.calculateBearing(drone.currentPosition.latitude,
+                  drone.currentPosition.longitude,
+                  pos.lat, pos.lng)}}°
+                </ng-container>
+              </ng-template>
+            </agm-snazzy-info-window>
+
+          </agm-marker>
+
+        </ng-container>
+
+        <!-- Zone -->
+        <ng-container *ngFor="let zone of droneService.droneZones; let i=index">
+          <agm-polygon [paths]="zone.area" [fillColor]="grey" [fillOpacity]="0.1" [strokeColor]="black"
+            [strokeOpacity]="1" (polyClick)="ctrlClick($event)"></agm-polygon>
+        </ng-container>
+      </agm-map>
+    </div>
+  </div>
+</div>
