@@ -29,7 +29,7 @@ export class AdminComponent implements OnInit {
     public personService: PersonService,
     public demoService: DemoService,
     public predictiveService: PredictiveService,
-    private signalR: SignalRService
+    public signalR: SignalRService
   ) { }
 
   ngOnInit(): void {

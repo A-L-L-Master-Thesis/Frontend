@@ -37,6 +37,10 @@ export class SignalRService {
     this.hubConnection.on('PredictiveChange', () => func());
   }
 
+  public addToggleListener(func: () => void): void {
+    this.hubConnection.on('TogglePredictive', () => func());
+  }
+
   public callRemoteProcedure(procedure: string): void {
     this.hubConnection.invoke(procedure).catch((error) => {
       console.log(`Error while calling ${procedure}: ${error}`);

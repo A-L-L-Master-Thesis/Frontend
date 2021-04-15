@@ -45,6 +45,10 @@ export class DemoService extends ApiBaseService<string, string> {
     signalR.addRestartListener(() => {
       this.restartDemo();
     });
+
+    signalR.addToggleListener(() => {
+      this.togglePredictive();
+    })
   }
 
   public toggleDrones(ext: string): void {
@@ -169,7 +173,8 @@ export class DemoService extends ApiBaseService<string, string> {
       else
         this.toastService.success(
           'The demo has successfully switched to non predictive mode', 'Switch Succeeded');
-    }
+    } else
+      this.toastService.error('Cant change demo while running');
   }
 
   public toggleDronePause(idx: number, pause: boolean): void {

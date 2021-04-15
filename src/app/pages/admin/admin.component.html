@@ -10,9 +10,9 @@
   </div>
   <footer class="card-footer">
     <a class="card-footer-item" (click)="demoService.toggleStartDemo()"> {{this.demoService.btnTxt}} </a>
-    <a class="card-footer-item" (click)="demoService.restartDemo()">Reset</a>
-    <a class="card-footer-item" (click)="predictiveService.toggleIntrusive()">Change Predictive</a>
-    <a class="card-footer-item" (click)="demoService.togglePredictive()">Toggle Predictive</a>
+    <a class="card-footer-item" (click)="signalR.callRemoteProcedure('RestartDemo')">Reset</a>
+    <a class="card-footer-item" (click)="predictiveService.toggleIntrusive()">Change Pop-up</a>
+    <a class="card-footer-item" (click)="signalR.callRemoteProcedure('TogglePredictive')">Toggle Predictive</a>
   </footer>
 </div>
 
