@@ -43,7 +43,8 @@ export class BoatService extends ApiBaseService<Boat, string> {
       if (paused) {
         this.movementSub?.unsubscribe();
       } else
-        this.MoveTo(this.destination.lat, this.destination.lng);
+        if (this.destination)
+          this.MoveTo(this.destination.lat, this.destination.lng);
     });
   }
 

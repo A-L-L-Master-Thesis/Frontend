@@ -48,16 +48,16 @@ export class DemoService extends ApiBaseService<string, string> {
 
     signalR.addToggleListener(() => {
       this.togglePredictive();
-    })
+    });
   }
 
   public toggleDrones(ext: string): void {
     this.postDemoToggle(ext).pipe(take(1)).subscribe();
   }
 
-  public restartDrones(): void {
+  public restartDrones(): Promise<void> {
     this.toggleDrones('false');
-    this.delete().pipe(take(1)).subscribe();
+    return this.delete().pipe(take(1)).toPromise<void>();
   }
 
   public restartDemo(reload = true): void {
@@ -66,18 +66,19 @@ export class DemoService extends ApiBaseService<string, string> {
       return;
     }
 
-    this.restartDrones();
-    this.btnTxt = toggleDemoBtnTxt[0];
-    this.predictiveService.ShowInfoCardSub.next(false);
-    this.logs.push('DemoRestart: ' + this.getTimestamp());
-    this.logService.sendLog('DemoRestart: ' + this.getTimestamp());
+    this.restartDrones().then(() => {
+      this.btnTxt = toggleDemoBtnTxt[0];
+      this.predictiveService.ShowInfoCardSub.next(false);
+      this.logs.push('DemoRestart: ' + this.getTimestamp());
+      this.logService.sendLog('DemoRestart: ' + this.getTimestamp());
 
-    if (reload)
-      window.location.reload();
-    else {
-      this.feedsService.getFeeds();
-      this.toastService.success('The demo has successfully resetted', 'Reset Succeeded');
-    }
+      if (reload)
+        window.location.reload();
+      else {
+        this.feedsService.getFeeds();
+        this.toastService.success('The demo has successfully resetted', 'Reset Succeeded');
+      }
+    });
   }
 
   public addMapClickToLog(lat: number, lng: number) {
