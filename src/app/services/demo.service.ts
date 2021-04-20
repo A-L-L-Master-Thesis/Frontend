@@ -164,7 +164,7 @@ export class DemoService extends ApiBaseService<string, string> {
   public togglePredictive(): void {
     if (!this.isDemoLive) {
       this.logs.push('Predictive Toggle: ' + this.getTimestamp());
-      this.logService.sendLog('Predictive Toggle: ' + this.getTimestamp());
+      this.logService.sendLog('Predictive: ' + this.feedsService.isPredictive + ": "  + this.getTimestamp());
       this.feedsService.isPredictive = !this.feedsService.isPredictive;
       this.restartDemo(false);
 
@@ -189,6 +189,7 @@ export class DemoService extends ApiBaseService<string, string> {
     let isPaused: boolean = this.droneService.droneList[idx].status != DroneStatus.Searching;
 
     this.toggleDronePause(idx, !isPaused);
+    this.logService.sendLog("Drone: " + (idx+1) + " IsPaused: " + isPaused + ": " + this.getTimestamp());
   }
 }
 
