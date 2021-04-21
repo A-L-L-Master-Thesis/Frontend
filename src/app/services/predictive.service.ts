@@ -28,16 +28,16 @@ export class PredictiveService {
     private feedService: FeedsService,
     private signalR: SignalRService,
     private logsService: LogsService,
-    private demoSerive: DemoService,
     toastr: ToastrService) {
     signalR.addPredictiveListener(() => {
       this.IntrusiveSub.next(!this.IntrusiveSub.value);
+      this.logsService.sendLog('Intrusive: ' + this.IntrusiveSub.value + ": "  + this.getTimestamp());
       toastr.success(`Changed Predictive Mode\nIntrusive: ${this.IntrusiveSub.value}`, 'Predictive Change');
     });
   }
 
   public enablePredictive(data: string = '') {
-    this.logsService.sendLog("Person Appears: " + this.demoSerive.getTimestamp());
+    this.logsService.sendLog("Person Appears: " + this.getTimestamp());
 
     if (!this.feedService.isPredictive) {
       return;
@@ -64,7 +64,19 @@ export class PredictiveService {
   }
 
   public toggleIntrusive(): void {
-    this.logsService.sendLog('Intrusive: ' + this.IntrusiveSub.value + ": "  + this.demoSerive.getTimestamp());
     this.signalR.callRemoteProcedure('ChangePredictive');
+  }
+
+  public getTimestamp() {
+    const now: Date = new Date();
+    return (
+      now.getHours() +
+      ':' +
+      now.getMinutes() +
+      ':' +
+      now.getSeconds() +
+      ':' +
+      now.getMilliseconds()
+    );
   }
 }
